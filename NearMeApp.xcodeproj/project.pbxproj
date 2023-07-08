@@ -15,6 +15,7 @@
 		3936C6F12A51B6BF002B42E9 /* SwiftUIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3936C6F02A51B6BF002B42E9 /* SwiftUIView.swift */; };
 		3987E34A2A585F7A0074CD7B /* PlaceAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3987E3492A585F7A0074CD7B /* PlaceAnnotation.swift */; };
 		3987E34D2A5860B90074CD7B /* CLLocation+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3987E34C2A5860B80074CD7B /* CLLocation+Extension.swift */; };
+		3987E3502A587A760074CD7B /* PlacesTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3987E34F2A587A760074CD7B /* PlacesTableViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +29,7 @@
 		3936C6F02A51B6BF002B42E9 /* SwiftUIView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SwiftUIView.swift; sourceTree = "<group>"; };
 		3987E3492A585F7A0074CD7B /* PlaceAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceAnnotation.swift; sourceTree = "<group>"; };
 		3987E34C2A5860B80074CD7B /* CLLocation+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocation+Extension.swift"; sourceTree = "<group>"; };
+		3987E34F2A587A760074CD7B /* PlacesTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlacesTableViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 		3936C6DB2A519373002B42E9 /* NearMeApp */ = {
 			isa = PBXGroup;
 			children = (
+				3987E34E2A587A590074CD7B /* Controllers */,
 				3987E34B2A58604C0074CD7B /* Extentions */,
 				3987E3482A585F650074CD7B /* Annotations */,
 				3936C6DC2A519373002B42E9 /* AppDelegate.swift */,
@@ -87,6 +90,14 @@
 				3987E34C2A5860B80074CD7B /* CLLocation+Extension.swift */,
 			);
 			path = Extentions;
+			sourceTree = "<group>";
+		};
+		3987E34E2A587A590074CD7B /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				3987E34F2A587A760074CD7B /* PlacesTableViewController.swift */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -164,6 +175,7 @@
 				3936C6DD2A519373002B42E9 /* AppDelegate.swift in Sources */,
 				3987E34A2A585F7A0074CD7B /* PlaceAnnotation.swift in Sources */,
 				3936C6F12A51B6BF002B42E9 /* SwiftUIView.swift in Sources */,
+				3987E3502A587A760074CD7B /* PlacesTableViewController.swift in Sources */,
 				3936C6DF2A519373002B42E9 /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

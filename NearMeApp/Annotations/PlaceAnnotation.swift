@@ -18,8 +18,13 @@ class PlaceAnnotation: MKPointAnnotation {
         super.init()
         self.coordinate = mapItem.placemark.coordinate
     }
-    
-    var name: String { mapItem.name ?? ""}
-    var phone: String { mapItem.phoneNumber ?? ""}
-    var location: CLLocation {mapItem.placemark.location ?? }
+
+    var name: String { mapItem.name ?? "" }
+    var phone: String { mapItem.phoneNumber ?? "" }
+    var location: CLLocation { mapItem.placemark.location ?? CLLocation.default }
+
+    var address: String {
+        var placeMark = mapItem.placemark
+        return "\(placeMark.subThoroughfare ?? "") \(placeMark.thoroughfare ?? "") \(placeMark.locality ?? "") \(placeMark.countryCode ?? "")"
+    }
 }

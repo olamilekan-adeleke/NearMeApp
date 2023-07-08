@@ -83,9 +83,26 @@ class ViewController: UIViewController {
         request.region = map.region
 
         let search = MKLocalSearch(request: request)
-        search.start { response, error in
+        search.start { [weak self] response, error in
             guard let response = response, error == nil else { return }
-            print(response.mapItems)
+            let places = response.mapItems.map(PlaceAnnotation.init)
+            places.forEach { self?.map.addAnnotation($0) }
+
+            self?.showPlacesListSheet(places: places)
+        }
+    }
+
+    private func showPlacesListSheet(places: [PlaceAnnotation]) {
+        guard let locationManager = locationManager,
+              let location = locationManager.location else { return }
+
+        let placesTVC = PlacesTableViewController(userLocation: location, places: places)
+        placesTVC.modalPresentationStyle = .pageSheet
+
+        if let sheet = placesTVC.sheetPresentationController {
+            sheet.prefersGrabberVisible = true
+            sheet.detents = [.medium(), .large()]
+            present(placesTVC, animated: true)
         }
     }
 }
@@ -95,7 +112,6 @@ extension ViewController: UITextFieldDelegate {
         let text = textField.text ?? ""
         if !text.isEmpty {
             textField.resignFirstResponder()
-            // perform search
             findNearByPlaces(by: text)
         }
 
