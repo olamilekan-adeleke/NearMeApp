@@ -17,14 +17,14 @@ class PlacesTableViewController: UITableViewController {
         self.userLocation = userLocation
         self.places = places
         super.init(nibName: nil, bundle: nil)
-        
+
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "PlaceCell")
     }
-    
+
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-         places.count
+        places.count
     }
-    
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "PlaceCell", for: indexPath)
         let place = places[indexPath.row]
@@ -32,7 +32,7 @@ class PlacesTableViewController: UITableViewController {
         // configure cell
         var content = cell.defaultContentConfiguration()
         content.text = place.name
-        content.secondaryText = "Distance KM"
+        content.secondaryText = getDistance(from: userLocation, to: place.location)
 
         cell.contentConfiguration = content
         return cell
@@ -41,5 +41,11 @@ class PlacesTableViewController: UITableViewController {
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+
+    private func getDistance(from: CLLocation, to: CLLocation) -> String {
+        let distance: CLLocationDistance = from.distance(from: to)
+        let meters = Measurement(value: distance, unit: UnitLength.meters)
+        return meters.formatted()
     }
 }

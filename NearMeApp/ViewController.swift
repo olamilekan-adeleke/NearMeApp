@@ -9,15 +9,17 @@ import MapKit
 import UIKit
 
 class ViewController: UIViewController {
+    private var places: [PlaceAnnotation] = []
     var locationManager: CLLocationManager?
-
+    
     lazy var map: MKMapView = {
         let map = MKMapView()
         map.showsUserLocation = true
+        map.delegate = self
         map.translatesAutoresizingMaskIntoConstraints = false
         return map
     }()
-
+    
     lazy var searchTextField: UITextField = {
         let searchTextField = UITextField()
         searchTextField.delegate = self
@@ -31,31 +33,31 @@ class ViewController: UIViewController {
         searchTextField.returnKeyType = .go
         return searchTextField
     }()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Init Location Manager
+        
+            // Init Location Manager
         locationManager = CLLocationManager()
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
         locationManager?.delegate = self
-
+        
         locationManager?.requestWhenInUseAuthorization()
         locationManager?.requestAlwaysAuthorization()
         locationManager?.requestLocation()
-
+        
         setUpUi()
     }
-
+    
     private func setUpUi() {
         view.addSubview(searchTextField)
         view.addSubview(map)
         view.bringSubviewToFront(searchTextField)
-
+        
         setUpMapLayout()
         setUpTextFieldLayout()
     }
-
+    
     private func setUpMapLayout() {
         NSLayoutConstraint.activate([
             map.widthAnchor.constraint(equalTo: view.widthAnchor),
@@ -64,7 +66,7 @@ class ViewController: UIViewController {
             map.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
     }
-
+    
     private func setUpTextFieldLayout() {
         NSLayoutConstraint.activate([
             searchTextField.heightAnchor.constraint(equalToConstant: 44),
@@ -73,37 +75,47 @@ class ViewController: UIViewController {
             searchTextField.topAnchor.constraint(equalTo: view.topAnchor, constant: 60),
         ])
     }
-
+    
     private func findNearByPlaces(by query: String) {
-        // clear all annotations
+            // clear all annotations
         map.removeAnnotations(map.annotations)
-
+        
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = query
         request.region = map.region
-
+        
         let search = MKLocalSearch(request: request)
         search.start { [weak self] response, error in
             guard let response = response, error == nil else { return }
-            let places = response.mapItems.map(PlaceAnnotation.init)
-            places.forEach { self?.map.addAnnotation($0) }
-
-            self?.showPlacesListSheet(places: places)
+            self?.places = response.mapItems.map(PlaceAnnotation.init)
+            self?.places.forEach { self?.map.addAnnotation($0) }
+            
+            if let places = self?.places {
+                self?.showPlacesListSheet(places: places)
+            }
         }
     }
-
+    
     private func showPlacesListSheet(places: [PlaceAnnotation]) {
         guard let locationManager = locationManager,
               let location = locationManager.location else { return }
-
+        
         let placesTVC = PlacesTableViewController(userLocation: location, places: places)
         placesTVC.modalPresentationStyle = .pageSheet
-
+        
         if let sheet = placesTVC.sheetPresentationController {
             sheet.prefersGrabberVisible = true
             sheet.detents = [.medium(), .large()]
             present(placesTVC, animated: true)
         }
+    }
+}
+
+extension ViewController: MKMapViewDelegate {
+    func mapView(_ mapView: MKMapView, didSelect annotation: MKAnnotation) {
+        guard let placeAnnotation: PlaceAnnotation = annotation as? PlaceAnnotation else { return }
+
+
     }
 }
 
