@@ -11,7 +11,7 @@ import UIKit
 
 class PlacesTableViewController: UITableViewController {
     var userLocation: CLLocation
-    let places: [PlaceAnnotation]
+    var places: [PlaceAnnotation]
 
     init(userLocation: CLLocation, places: [PlaceAnnotation]) {
         self.userLocation = userLocation
@@ -19,6 +19,13 @@ class PlacesTableViewController: UITableViewController {
         super.init(nibName: nil, bundle: nil)
 
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "PlaceCell")
+        self.places.swapAt(selectedAnnotationIndex ?? 0, 0)
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let place = places[indexPath.row]
+        let placeDetailVC = PlaceDetailViewController(place: place)
+        present(placeDetailVC, animated: true)
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -35,12 +42,19 @@ class PlacesTableViewController: UITableViewController {
         content.secondaryText = getDistance(from: userLocation, to: place.location)
 
         cell.contentConfiguration = content
+        cell.backgroundColor = place.isSelected ? UIColor.systemTeal : UIColor.clear
         return cell
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+}
+
+extension PlacesTableViewController {
+    private var selectedAnnotationIndex: Int? {
+        places.firstIndex(where: { $0.isSelected == true })
     }
 
     private func getDistance(from: CLLocation, to: CLLocation) -> String {

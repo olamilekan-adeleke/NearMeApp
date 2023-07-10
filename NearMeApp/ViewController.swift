@@ -37,7 +37,7 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-            // Init Location Manager
+        // Init Location Manager
         locationManager = CLLocationManager()
         locationManager?.desiredAccuracy = kCLLocationAccuracyBest
         locationManager?.delegate = self
@@ -77,7 +77,7 @@ class ViewController: UIViewController {
     }
     
     private func findNearByPlaces(by query: String) {
-            // clear all annotations
+        // clear all annotations
         map.removeAnnotations(map.annotations)
         
         let request = MKLocalSearch.Request()
@@ -112,10 +112,20 @@ class ViewController: UIViewController {
 }
 
 extension ViewController: MKMapViewDelegate {
+    private func clearSelectedAnnotations() {
+        places = places.map { place in
+            place.isSelected = false
+            return place
+        }
+    }
+    
     func mapView(_ mapView: MKMapView, didSelect annotation: MKAnnotation) {
-        guard let placeAnnotation: PlaceAnnotation = annotation as? PlaceAnnotation else { return }
-
-
+        clearSelectedAnnotations()
+        
+        guard let selectedAnnotation: PlaceAnnotation = annotation as? PlaceAnnotation else { return }
+        let placeAnnotation = places.first(where: { $0.id == selectedAnnotation.id })
+        placeAnnotation?.isSelected = true
+        showPlacesListSheet(places: places)
     }
 }
 
