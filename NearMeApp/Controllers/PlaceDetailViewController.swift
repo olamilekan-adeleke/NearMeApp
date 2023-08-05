@@ -96,9 +96,10 @@ class PlaceDetailViewController: UIViewController {
     }
     
     @objc private func directionButtonTapped(_ sender: UIButton) {
-        let coordinate = place.location.coordinate
-        guard let url = URL(string: "https://maps.apple.com?daddr=\(coordinate.latitude),\(coordinate.longitude)") else { return }
-        UIApplication.shared.open(url)
+        place.mapItem.openInMaps()
+//        let coordinate = place.location.coordinate
+//        guard let url = URL(string: "https://maps.apple.com?daddr=\(coordinate.latitude),\(coordinate.longitude)") else { return }
+//        UIApplication.shared.open(url)
     }
     
     @objc private func callButtonTapped(_ sender: UIButton) {
